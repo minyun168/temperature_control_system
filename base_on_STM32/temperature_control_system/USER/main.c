@@ -10,7 +10,7 @@
  {	 
 	u8 t=0;	
   vu8 key=0;	 
-	short Set_Temp=30;
+	short Set_Temp=20; 
 	short temperature;    	   
 
 	delay_init();	    	 //延时函数初始化	  
@@ -37,57 +37,63 @@
 	POINT_COLOR=RED;//设置字体为红色 
  	LCD_ShowString(30,150,200,16,16,"Temp:   . C");	 
 	while(1)
-	{	    	    
- 		if(t%10==0)			//每100ms读取一次
-		{									  
-			temperature=DS18B20_Get_Temp();	
-			/*if(temperature<0)
+	{
+		//if(KEY_Scan(0)==0)
+			if(t%10==0)			//每100ms读取一次
+			{									  
+				temperature=DS18B20_Get_Temp();	
+				/*if(temperature<0)
+				{
+					LCD_ShowChar(30+40,150,'-',16,0);			//显示负号
+					temperature=-temperature;					//转为正数
+				}*/
+				//else 
+				//	LCD_ShowChar(30+40,150,' ',16,0);			//去掉负号
+				LCD_ShowNum(30+48,150,temperature/10,2,16);	//显示正数部分	    
+				LCD_ShowNum(30+72,150,temperature%10,1,16);	//显示小数部分 	
+			}				   
+			delay_ms(10);
+			t++;
+			if(t==20)
 			{
-				LCD_ShowChar(30+40,150,'-',16,0);			//显示负号
-				temperature=-temperature;					//转为正数
-			}*/
-			//else 
-			//	LCD_ShowChar(30+40,150,' ',16,0);			//去掉负号
-			LCD_ShowNum(30+48,150,temperature/10,2,16);	//显示正数部分	    
-   		LCD_ShowNum(30+72,150,temperature%10,1,16);	//显示小数部分 	
-     if(Set_Temp<temperature)
-	 	 {
-			 LED0=0;
-		 }
-		 else if(Set_Temp>temperature)
-		 {
-			 LED0=1;
-		 }			
-		}				   
-	 	delay_ms(10);
-		t++;
-		if(t==20)
-		{
-			t=0;
-		//	LED0=!LED0;
-		}
-		
-		LCD_ShowNum(30+80,90,Set_Temp,2,16);	//显示正数部分	    
-   	//LCD_ShowNum(30+72,90,Set_Temp%10,1,16);	//显示小数部分 	
-		
-		//key0 - , key1 + , key_up return 70 
-		key = KEY_Scan(0);
-		if(key)
-		{
-			switch(key)
-			{
-				case WKUP_PRES:
-					Set_Temp = 70;
-					break;
-				case KEY1_PRES:
-					Set_Temp = Set_Temp+1;
-				  break;
-				case KEY0_PRES:
-					Set_Temp = Set_Temp-1;
-				  break;					
+				t=0;
+			//	LED0=!LED0;
 			}
-		}
-		
+			
+			LCD_ShowNum(30+80,90,Set_Temp,2,16);	//显示正数部分	    
+			//LCD_ShowNum(30+72,90,Set_Temp%10,1,16);	//显示小数部分 	
+			
+			//key0 - , key1 + , key_up return 70 
+			key = KEY_Scan(0);
+			if(key)
+			{
+				switch(key)
+				{
+					case WKUP_PRES:
+						Set_Temp = 70;
+						break;
+					case KEY1_PRES:
+						Set_Temp = Set_Temp+1;
+						break;
+					case KEY0_PRES:
+						Set_Temp = Set_Temp-1;
+						break;					
+				}
+			}
+			 if((Set_Temp*10)<temperature)
+			 {
+				 //delay_ms(890);			 
+				 LED0=0;
+				 //delay_ms(100);
+				 
+			 }
+			 else if((Set_Temp*10)>temperature-11)
+			 {
+				 delay_ms(890);
+				 LED0=1;
+				 delay_ms(100);
+				 LED0=0;
+			 }					
 	}
 }
 
