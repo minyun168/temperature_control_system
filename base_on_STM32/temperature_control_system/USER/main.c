@@ -11,7 +11,9 @@
 	u8 t=0;	
   vu8 key=0;	 
 	short Set_Temp=20; 
-	short temperature;    	   
+	short temperature;   
+	short interval; 
+	short count;	   
 
 	delay_init();	    	 //延时函数初始化	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级
@@ -80,20 +82,43 @@
 						break;					
 				}
 			}
-			 if((Set_Temp*10)<temperature)
+
+			for(interval=1;interval<13;intervl++)
+			{
+				if(temperature/10+interval<=100)
+				{
+
+					Set_Temp = temperature/10+interval;
+					for(count=0;count<300;count++)
+					{
+					 	
+
+						 if((Set_Temp*10)<temperature)
+						 {
+							 //delay_ms(890);			 
+							 LED0=0;
+							 //delay_ms(100);
+							 
+						 }
+						 else if((Set_Temp*10)>temperature)
+						 {
+						 	
+						 	 delay_ms(890);
+							 LED0=1;
+							 delay_ms(100);
+							 LED0=0;
+							
+						 }
+
+					}
+		    	}
+
+			 }	
+
+			 if (count==32760)
 			 {
-				 //delay_ms(890);			 
-				 LED0=0;
-				 //delay_ms(100);
-				 
-			 }
-			 else if((Set_Temp*10)>temperature-11)
-			 {
-				 delay_ms(890);
-				 LED0=1;
-				 delay_ms(100);
-				 LED0=0;
-			 }					
+			 	count=0;
+			 }				
 	}
 }
 
