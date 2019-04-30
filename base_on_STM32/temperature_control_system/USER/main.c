@@ -5,12 +5,14 @@
 #include "lcd.h"
 #include "usart.h"	 
 #include "ds18b20.h" 
- 
+
+
+
  int main(void)
  {	 
 	u8 t=0;	
   vu8 key=0;	 
-	short Set_Temp=20; 
+	short Set_Temp=40; 
 	short temperature;   
 	short interval; 
 	short count;	   
@@ -83,9 +85,9 @@
 				}
 			}
 
-			for(interval=1;interval<13;intervl++)
+			for(interval=4;interval<50;interval=interval+1)
 			{
-				if(temperature/10+interval<=100)
+				if((temperature/10+interval)<=100)
 				{
 
 					Set_Temp = temperature/10+interval;
@@ -95,23 +97,27 @@
 
 						 if((Set_Temp*10)<temperature)
 						 {
-							 //delay_ms(890);			 
+							// delay_ms(890);			 
 							 LED0=0;
-							 //delay_ms(100);
+							 delay_ms(1000);
 							 
 						 }
 						 else if((Set_Temp*10)>temperature)
 						 {
 						 	
-						 	 delay_ms(890);
+						 	 delay_ms(500);
 							 LED0=1;
-							 delay_ms(100);
+							 delay_ms(500);
 							 LED0=0;
 							
 						 }
-
+						 LCD_ShowNum(30+80,90,Set_Temp,2,16);
+						 temperature=DS18B20_Get_Temp();	
+						 LCD_ShowNum(30+48,150,temperature/10,2,16);	    
+				     LCD_ShowNum(30+72,150,temperature%10,1,16);	
+						 
 					}
-		    	}
+		    }
 
 			 }	
 
@@ -121,4 +127,3 @@
 			 }				
 	}
 }
-
