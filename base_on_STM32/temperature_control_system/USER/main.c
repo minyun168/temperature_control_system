@@ -86,7 +86,7 @@
 				}
 			}
 			
-			interval=80;
+			interval=5;
 
 			for(i=0;i<50;i++)
 			{
@@ -95,7 +95,7 @@
 
 					Set_Temp = temperature/10+interval;
 					count=0;
-					for(;count<900;count++)
+					for(;count<300;count++)
 					{					 	
 						 if((Set_Temp*10)<=temperature)
 						 {
@@ -106,10 +106,10 @@
 						 else if((Set_Temp*10)>temperature)
 						 {
 						 	
-						 	// delay_ms(500);
+						 	 delay_ms(500);
 							 LED0=1;
-							 delay_ms(1000);
-							// LED0=0;							
+							 delay_ms(500);
+							 LED0=0;							
 						 }
 						 LCD_ShowNum(30+80,90,Set_Temp,2,16);
 						 temperature=DS18B20_Get_Temp();	
