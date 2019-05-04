@@ -15,7 +15,8 @@
 	short Set_Temp=40; 
 	short temperature;   
 	short interval; 
-	short count;	   
+	short count;	
+	short i;   
 
 	delay_init();	    	 //延时函数初始化	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级
@@ -85,8 +86,9 @@
 				}
 			}
 			
-			interval=20;
-			for(;interval<50;)
+			interval=10;
+
+			for(i=0;i<50;i++)
 			{
 				if((temperature/10+interval)<=100)
 				{
@@ -120,7 +122,7 @@
 						 
 					}
 		    }
-				interval=interval+5;
+				//interval=interval+5;
 
 			 }	
 
