@@ -11,6 +11,8 @@
  int main(void)
  {	 
 	u8 t=0;	
+	u8 sure_key=0;
+	short Temp_range;
   vu8 key=0;	 
 	short Set_Temp=40; 
 	short temperature;   
@@ -69,23 +71,31 @@
 			//LCD_ShowNum(30+72,90,Set_Temp%10,1,16);	//显示小数部分 	
 			
 			//key0 - , key1 + , key_up return 70 
-			key = KEY_Scan(0);
-			if(key)
+			while(sure_key==0)
 			{
-				switch(key)
+				key = KEY_Scan(0);
+				if(key)
 				{
-					case WKUP_PRES:
-						Set_Temp = 70;
-						break;
-					case KEY1_PRES:
-						Set_Temp = Set_Temp+1;
-						break;
-					case KEY0_PRES:
-						Set_Temp = Set_Temp-1;
-						break;					
+					switch(key)
+					{
+						case WKUP_PRES:
+							sure_key=1;
+							//Set_Temp = 70;
+							break;
+						case KEY1_PRES:
+							Set_Temp = Set_Temp+1;
+							break;
+						case KEY0_PRES:
+							Set_Temp = Set_Temp-1;
+							break;					
+					}
 				}
-			}
-			
+		    }
+
+		    Temp_range = Set_Temp*10-temperature;  //difference between the range of Temp_range
+
+
+			/*
 			interval=1;
 
 			for(i=0;i<100;i++)
@@ -126,7 +136,7 @@
 
 			 }	
 
-			/* if (count==32760)
+			 if (count==32760)
 			 {
 			 	count=0;
 			 }	
