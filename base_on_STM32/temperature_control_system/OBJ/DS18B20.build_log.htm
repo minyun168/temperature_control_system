@@ -27,16 +27,27 @@ Project File Date:  04/21/2019
 <h2>Output:</h2>
 Build target 'DS18B20'
 compiling main.c...
-linking...
-Program Size: Code=28052 RO-data=6456 RW-data=60 ZI-data=1852  
-FromELF: creating hex file...
-"..\OBJ\DS18B20.axf" - 0 Error(s), 0 Warning(s).
+main.c(222): error:  #29: expected an expression
+        }
+main.c(222): error:  #18: expected a ")"
+        }
+main.c(222): error:  #127: expected a statement
+        }
+main.c(20): warning:  #177-D: variable "interval" was declared but never referenced
+        short interval; 
+main.c(21): warning:  #177-D: variable "count" was declared but never referenced
+        short count;    
+main.c(22): warning:  #550-D: variable "deviation_value" was set but never used
+        short deviation_value;
+main.c: 3 warnings, 3 errors
+"..\OBJ\DS18B20.axf" - 3 Error(s), 3 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   E:\minyu\github_repositories\temperature_control_system\base_on_STM32\temperature_control_system\USER\RTE
   E:\minyu\software\MDK5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include
 
 <h2>Collection of Component Files used:</h2>
+Target not created.
 </pre>
 </body>
 </html>

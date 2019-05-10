@@ -12,13 +12,16 @@
  {	 
 	u8 t=0;	
 	u8 sure_key=0;
+	u8 mode=0;
 	short Temp_range;
   vu8 key=0;	 
 	short Set_Temp=40; 
 	short temperature;   
 	short interval; 
 	short count;	
-	short i;   
+	short deviation_value;
+	short i,j; 
+  short deviation_list[11][10]={{9,9,8,7,5,3,2,1,0,0},{9,9,8,6,5,4,3,1,0,0},{10,9,9,7,6,3,2,1,0,0},{10,10,9,8,6,5,3,2,1,0},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{73,64,53,50,47,45,41,39,23,20},{73,64,53,50,47,45,41,39,23,20}};	 
 
 	delay_init();	    	 //延时函数初始化	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级
@@ -88,14 +91,89 @@
 						case KEY0_PRES:
 							Set_Temp = Set_Temp-1;
 							break;					
-					}
-				}
-		    }
+				  }
+			 	 }
+		   }
 
-		    Temp_range = Set_Temp*10-temperature;  //difference between the range of Temp_range
-
-
-			/*
+		   Temp_range = Set_Temp*10-temperature;  //difference between the range of Temp_range
+			 
+			 if(Temp_range>=1&&Temp_range<5)
+			 {
+				 delay_ms(900);
+				 LED0=1;
+				 delay_ms(100);
+				 LED0=0;	
+				 mode=1;
+			 }
+			 
+			 else if (Temp_range>=5&&Temp_range<10)
+			 {
+				 delay_ms(500);
+				 LED0=1;
+				 delay_ms(500);
+				 LED0=0;
+				 mode=2;
+			 }
+			 
+			 else if (Temp_range>=10)
+			 {
+				 LED0=1;
+				 delay_ms(1000);
+				 mode=3;
+			 }
+			 
+			 else 
+			 {
+				 delay_ms(100);
+			 }
+			 
+			 temperature=DS18B20_Get_Temp();	
+			 LCD_ShowNum(30+48,150,temperature/10,2,16);	//显示正数部分	    
+			 LCD_ShowNum(30+72,150,temperature%10,1,16);	//显示小数部分 	
+			 LCD_ShowNum(30+80,90,Set_Temp,2,16);
+			 
+			 //sure i 
+			 i=Temp_range-1;
+			 //sure j
+			 switch(temperature/10)
+			 {
+				 case 0: j=0;break;
+				 case 1: j=1;break;
+				 case 2: j=2;break;
+				 case 3: j=3;break;
+				 case 4: j=4;break;
+				 case 5: j=5;break;
+				 case 6: j=6;break;
+				 case 7: j=7;break;
+				 case 8: j=8;break;
+				 case 9: j=9;break;
+				 default: LCD_ShowString(30,130,200,16,16,"Have Error");
+				 
+			 }
+			 
+			 if(mode)
+				{
+					switch(mode)
+					{
+						case 1:
+							
+							deviation_value=deviation_list[i][j];
+							break;
+						case 2:
+							//Set_Temp = Set_Temp+1;
+							break;
+						case 3:
+							//Set_Temp = Set_Temp-1;
+							break;					
+				  }
+			 	 }
+				
+				//
+				if(Set_Temp>
+			 
+			 
+			 
+			 /*
 			interval=1;
 
 			for(i=0;i<100;i++)
