@@ -14,28 +14,28 @@
 	u8 sure_key=0;
 	u8 mode=0;
 	short Temp_range;
-  vu8 key=0;	 
-	short Set_Temp=40; 
+    vu8 key=0;	 
+	short Set_Temp; 
 	short temperature;   
 	short interval; 
 	short count;	
 	short deviation_value;
-	short i,j; 
-  short deviation_list[11][10]={{9,9,8,7,5,3,2,1,0,0},{9,9,8,6,5,4,3,1,0,0},{10,9,9,7,6,3,2,1,0,0},{10,10,9,8,6,5,3,2,1,0},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{73,64,53,50,47,45,41,39,23,20},{73,64,53,50,47,45,41,39,23,20}};	 
+	short i=0,j=0; 
+    short deviation_list[11][10]={{9,9,8,7,5,3,2,1,0,0},{9,9,8,6,5,4,3,1,0,0},{10,9,9,7,6,3,2,1,0,0},{10,10,9,8,6,5,3,2,1,0},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{73,64,53,50,47,45,41,39,23,20},{73,64,53,50,47,45,41,39,23,20}};	 
 
-	delay_init();	    	 //延时函数初始化	  
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级
-	uart_init(115200);	 	//串口初始化为 115200
-	LED_Init();		  		//初始化与LED连接的硬件接口
+	delay_init();	    	 //脩脫脢卤潞炉脢媒鲁玫脢录禄炉	  
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//脡猫脰脙脰脨露脧脫脜脧脠录露路脰脳茅脦陋脳茅2拢潞2脦禄脟脌脮录脫脜脧脠录露拢卢2脦禄脧矛脫娄脫脜脧脠录露
+	uart_init(115200);	 	//麓庐驴脷鲁玫脢录禄炉脦陋 115200
+	LED_Init();		  		//鲁玫脢录禄炉脫毛LED脕卢陆脫碌脛脫虏录镁陆脫驴脷
 	KEY_Init();
-	LCD_Init();			   	//初始化LCD  
- 	POINT_COLOR=GREEN;		//设置字体为绿色 
+	LCD_Init();			   	//鲁玫脢录禄炉LCD  
+ 	POINT_COLOR=GREEN;		//脡猫脰脙脳脰脤氓脦陋脗脤脡芦 
 	LCD_ShowString(30,50,200,16,16,"2019/5/19");	
 	//LCD_ShowString(30,70,200,16,16,"DS18B20 TEST");	
-	POINT_COLOR=BLUE;     //蓝色
+	POINT_COLOR=BLUE;     //脌露脡芦
 	LCD_ShowString(30,90,200,16,16,"Set Temp:   C");
 	//LCD_ShowString(30,110,200,16,16,"2019/5/19");		  
- 	while(DS18B20_Init())	//DS18B20初始化	
+ 	while(DS18B20_Init())	//DS18B20鲁玫脢录禄炉	
 	{
 		LCD_ShowString(30,130,200,16,16,"DS18B20 Error");
 		delay_ms(200);
@@ -44,34 +44,36 @@
 	}							
 	POINT_COLOR=GREEN;
 	LCD_ShowString(30,130,200,16,16,"DS18B20 OK");
-	POINT_COLOR=RED;//设置字体为红色 
+	POINT_COLOR=RED;//脡猫脰脙脳脰脤氓脦陋潞矛脡芦 
  	LCD_ShowString(30,150,200,16,16,"Temp:   . C");	 
 	while(1)
 	{
 		//if(KEY_Scan(0)==0)
-			if(t%10==0)			//每100ms读取一次
-			{									  
+			//if(t%10==0)			//脙驴100ms露脕脠隆脪禄麓脦
+			//{									  
 				temperature=DS18B20_Get_Temp();	
 				/*if(temperature<0)
 				{
-					LCD_ShowChar(30+40,150,'-',16,0);			//显示负号
-					temperature=-temperature;					//转为正数
+					LCD_ShowChar(30+40,150,'-',16,0);			//脧脭脢戮赂潞潞脜
+					temperature=-temperature;					//脳陋脦陋脮媒脢媒
 				}*/
 				//else 
-				//	LCD_ShowChar(30+40,150,' ',16,0);			//去掉负号
-				LCD_ShowNum(30+48,150,temperature/10,2,16);	//显示正数部分	    
-				LCD_ShowNum(30+72,150,temperature%10,1,16);	//显示小数部分 	
-			}				   
+				//	LCD_ShowChar(30+40,150,' ',16,0);			//脠楼碌么赂潞潞脜
+				LCD_ShowNum(30+48,150,temperature/10,2,16);	//脧脭脢戮脮媒脢媒虏驴路脰	    
+				LCD_ShowNum(30+72,150,temperature%10,1,16);	//脧脭脢戮脨隆脢媒虏驴路脰 	
+			//}				   
 			delay_ms(10);
-			t++;
-			if(t==20)
+			//t++;
+			/*if(t==20)
 			{
 				t=0;
 			//	LED0=!LED0;
 			}
-			
-			LCD_ShowNum(30+80,90,Set_Temp,2,16);	//显示正数部分	    
-			//LCD_ShowNum(30+72,90,Set_Temp%10,1,16);	//显示小数部分 	
+			*/
+			//Set_Temp is 2 digit number,but temperature is 3 digit number
+			Set_Temp=temperature/10;
+			LCD_ShowNum(30+80,90,Set_Temp,2,16);	//脧脭脢戮脮媒脢媒虏驴路脰	    
+			//LCD_ShowNum(30+72,90,Set_Temp%10,1,16);	//脧脭脢戮脨隆脢媒虏驴路脰 	
 			
 			//key0 - , key1 + , key_up return 70 
 			while(sure_key==0)
@@ -91,13 +93,17 @@
 						case KEY0_PRES:
 							Set_Temp = Set_Temp-1;
 							break;					
-				  }
-			 	 }
-		   }
+				    }
+			 	}
+			 	LCD_ShowNum(30+80,90,Set_Temp,2,16);
+		    }
 
-		   Temp_range = Set_Temp*10-temperature;  //difference between the range of Temp_range
+
+		while(1)
+		{
+		    Temp_range = Set_Temp*10-temperature;  //have *10  !!!!!!!!!!!!!!!!!!!!!!!!!!!
 			 
-			 if(Temp_range>=1&&Temp_range<5)
+			 if((Temp_range>=10)&&(Temp_range<50))
 			 {
 				 delay_ms(900);
 				 LED0=1;
@@ -106,7 +112,7 @@
 				 mode=1;
 			 }
 			 
-			 else if (Temp_range>=5&&Temp_range<10)
+			 else if ((Temp_range>=50)&&(Temp_range<100))
 			 {
 				 delay_ms(500);
 				 LED0=1;
@@ -115,10 +121,11 @@
 				 mode=2;
 			 }
 			 
-			 else if (Temp_range>=10)
+			 else if (Temp_range>=100)
 			 {
 				 LED0=1;
 				 delay_ms(1000);
+				 LED0=0;
 				 mode=3;
 			 }
 			 
@@ -128,14 +135,22 @@
 			 }
 			 
 			 temperature=DS18B20_Get_Temp();	
-			 LCD_ShowNum(30+48,150,temperature/10,2,16);	//显示正数部分	    
-			 LCD_ShowNum(30+72,150,temperature%10,1,16);	//显示小数部分 	
+			 LCD_ShowNum(30+48,150,temperature/10,2,16);	//脧脭脢戮脮媒脢媒虏驴路脰	    
+			 LCD_ShowNum(30+72,150,temperature%10,1,16);	//脧脭脢戮脨隆脢媒虏驴路脰 	
 			 LCD_ShowNum(30+80,90,Set_Temp,2,16);
 			 
 			 //sure i 
-			 i=Temp_range-1;
+			 if(i<=0)
+		 	 {
+		 		i=i;
+		 
+			 }
+			 else
+			 {
+			 	i=Temp_range-1;
+			 }
 			 //sure j
-			 switch(temperature/10)
+			 switch(temperature/100)
 			 {
 				 case 0: j=0;break;
 				 case 1: j=1;break;
@@ -160,16 +175,90 @@
 							deviation_value=deviation_list[i][j];
 							break;
 						case 2:
+							deviation_value=deviation_list[i][j];
 							//Set_Temp = Set_Temp+1;
 							break;
 						case 3:
+							deviation_value=deviation_list[10][j];
 							//Set_Temp = Set_Temp-1;
 							break;					
-				  }
-			 	 }
+				    }
+			 	}
 				
+			
+			//
+			while((Set_Temp*10)>(temperature+deviation_value))
+			{
+				if(mode==1)
+				{
+					 delay_ms(900);
+					 LED0=1;
+					 delay_ms(100);
+					 LED0=0;	
+
+				}
+
+				else if (mode==2)
+				{
+					delay_ms(500);
+					LED0=1;
+					delay_ms(500);
+				    LED0=0;	
+				}
+				else if(mode==3)
+				{
+					LED0=1;
+				    delay_ms(1000);
+				    LED0=0;
+				   // mode=3;
+				}
+
+				temperature=DS18B20_Get_Temp();	
+			    LCD_ShowNum(30+48,150,temperature/10,2,16);	//脧脭脢戮脮媒脢媒虏驴路脰	    
+			    LCD_ShowNum(30+72,150,temperature%10,1,16);
+
+			}
+
+
+
+
 				//
-				if(Set_Temp>
+			if((Set_Temp*10) <= (temperature + deviation_value))
+			{
+				if(mode==1)
+				{
+					delay_ms(1000);
+					
+				}
+				else if(mode==2)
+				{
+					for(count=0;count<180;count++)
+					{		
+						delay_ms(1000);
+					}
+
+
+				}
+				else if(mode==3)
+				{
+					for(count=0;count<300;count++)
+						{
+							delay_ms(1000);
+						}
+				}
+				else 
+				{
+
+
+					delay_ms(1000);
+					//LCD_ShowString(30,130,200,16,16,"Have not ");
+
+				}
+				//It is that enough?????
+			}
+			//when loop?????????
+		}
+
 			 
 			 
 			 
