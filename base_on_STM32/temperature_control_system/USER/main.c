@@ -21,7 +21,7 @@
 	short count;	
 	short deviation_value;
 	short i=0,j=0; 
-    short deviation_list[11][10]={{9,9,8,7,5,3,2,1,0,0},{9,9,8,6,5,4,3,1,0,0},{10,9,9,7,6,3,2,1,0,0},{10,10,9,8,6,5,3,2,1,0},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{73,64,53,50,47,45,41,39,23,20},{73,64,53,50,47,45,41,39,23,20}};	 
+  short deviation_list[11][10]={{9,9,8,7,5,3,2,1,0,0},{9,9,8,6,5,4,3,1,0,0},{10,9,9,7,6,3,2,1,0,0},{10,10,9,8,6,5,3,2,1,0},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{33,31,30,29,28,26,21,17,15,6},{73,64,53,50,47,45,41,39,23,20},{73,64,53,50,47,45,41,39,23,20}};	 
 
 	delay_init();	    	 //ÑÓÊ±º¯Êý³õÊ¼»¯	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//ÉèÖÃÖÐ¶ÏÓÅÏÈ¼¶·Ö×éÎª×é2£º2Î»ÇÀÕ¼ÓÅÏÈ¼¶£¬2Î»ÏìÓ¦ÓÅÏÈ¼¶
@@ -76,6 +76,7 @@
 			//LCD_ShowNum(30+72,90,Set_Temp%10,1,16);	//ÏÔÊ¾Ð¡Êý²¿·Ö 	
 			
 			//key0 - , key1 + , key_up return 70 
+			LED0=0;
 			while(sure_key==0)
 			{
 				key = KEY_Scan(0);
@@ -108,7 +109,7 @@
 				 delay_ms(900);
 				 LED0=1;
 				 delay_ms(100);
-				 LED0=0;	
+				 LED0=0;	                                                                   //                                                                          cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 				 mode=1;
 			 }
 			 
@@ -131,6 +132,7 @@
 			 
 			 else 
 			 {
+				 mode=0;
 				 delay_ms(100);
 			 }
 			 
@@ -140,15 +142,19 @@
 			 LCD_ShowNum(30+80,90,Set_Temp,2,16);
 			 
 			 //sure i 
-			 if(i<=0)
-		 	 {
-		 		i=i;
+			 //if(i<=0)
+		 	// {
+		 		//i=i;
 		 
-			 }
-			 else
-			 {
-			 	i=Temp_range-1;
-			 }
+			// }
+			// else
+			 //{
+			 	i=Temp_range/10-1;
+				if(i<0)
+				{
+					i=0;
+				}
+			// }
 			 //sure j
 			 switch(temperature/100)
 			 {
@@ -162,7 +168,7 @@
 				 case 7: j=7;break;
 				 case 8: j=8;break;
 				 case 9: j=9;break;
-				 default: LCD_ShowString(30,130,200,16,16,"Have Error");
+				 default: LCD_ShowString(30,130,200,16,16,"Error");
 				 
 			 }
 			 
@@ -181,8 +187,9 @@
 						case 3:
 							deviation_value=deviation_list[10][j];
 							//Set_Temp = Set_Temp-1;
-							break;					
-				    }
+							break;			
+						default: LCD_ShowString(30,130,200,16,16,"Mode error");
+				   }
 			 	}
 				
 			
@@ -235,6 +242,9 @@
 					for(count=0;count<180;count++)
 					{		
 						delay_ms(1000);
+						 temperature=DS18B20_Get_Temp();	
+						 LCD_ShowNum(30+48,150,temperature/10,2,16);	//ÏÔÊ¾ÕýÊý²¿·Ö	    
+						 LCD_ShowNum(30+72,150,temperature%10,1,16);
 					}
 
 
@@ -244,9 +254,13 @@
 					for(count=0;count<300;count++)
 						{
 							delay_ms(1000);
+							temperature=DS18B20_Get_Temp();	
+						  LCD_ShowNum(30+48,150,temperature/10,2,16);	//ÏÔÊ¾ÕýÊý²¿·Ö	    
+						  LCD_ShowNum(30+72,150,temperature%10,1,16);
+
 						}
 				}
-				else 
+				else if(mode==0)
 				{
 
 
